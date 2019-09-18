@@ -85,7 +85,7 @@ public class PlayerScript : MonoBehaviour
                 break;
 
             case "Grinder":
-                ingredientToCook = GameObject.Find("/Ingredients/Niku");
+                ingredientToCook = GameObject.Find("/Ingredients/Meat");
                 if (ingredients.Contains(ingredientToCook) == false)
                 {
                     cookText.gameObject.SetActive(true);
@@ -130,7 +130,7 @@ public class PlayerScript : MonoBehaviour
                     break;
 
                 case "Grinder":
-                    ingredientToCook = GameObject.Find("/Ingredients/Niku");
+                    ingredientToCook = GameObject.Find("/Ingredients/Meat");
                     if (ingredients.Contains(ingredientToCook))
                     {
 
