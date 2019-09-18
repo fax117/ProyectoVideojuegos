@@ -12,12 +12,18 @@ public class PlayerScript : MonoBehaviour
     private List<GameObject> ingredients;
     private GameObject ingredientToCook;
     public Text cookText;
+    public RawImage cheeseIcon;
+    public RawImage flourIcon;
+    public RawImage meatIcon;
+    public RawImage tomatoIcon;
 
     private void Start()
     {
         speed = 10f;
         sprintSpeed = 7f;
         ingredients = new List<GameObject>();
+       
+
     }
 
     void Update()
@@ -49,6 +55,45 @@ public class PlayerScript : MonoBehaviour
             ingredients.Add(ingredientGo);
             other.gameObject.GetComponent<Renderer>().enabled = false;
         }
+
+        var ingredientName = other.name;
+        Color tempAlpha;
+        
+
+        switch (ingredientName)
+        {
+            case "Cheese":
+                Debug.Log("cheese");
+                tempAlpha = cheeseIcon.color;
+                tempAlpha.a = 1f;
+                cheeseIcon.color = tempAlpha;
+                break;
+
+            case "Flour":
+                Debug.Log("flour");
+                tempAlpha = flourIcon.color;
+                tempAlpha.a = 1f;
+                flourIcon.color = tempAlpha;
+                break;
+
+            case "Meat":
+                Debug.Log("meat");
+                tempAlpha = meatIcon.color;
+                tempAlpha.a = 1f;
+                meatIcon.color = tempAlpha;
+                break;
+
+            case "Tomato":
+                Debug.Log("tomato");
+                tempAlpha = cheeseIcon.color;
+                tempAlpha.a = 1f;
+                tomatoIcon.color = tempAlpha;
+                break;
+
+
+
+        }
+       
     }
 
     private void OnTriggerStay(Collider other)
