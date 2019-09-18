@@ -89,9 +89,6 @@ public class PlayerScript : MonoBehaviour
                 tempAlpha.a = 1f;
                 tomatoIcon.color = tempAlpha;
                 break;
-
-
-
         }
        
     }
@@ -148,7 +145,6 @@ public class PlayerScript : MonoBehaviour
                     ingredientToCook = GameObject.Find("/Ingredients/Tomato");
                     if (ingredients.Contains(ingredientToCook))
                     {
-                        
                         cookText.gameObject.SetActive(true);
                         cookText.text = "Press E to make sauce";
                     }
@@ -158,7 +154,6 @@ public class PlayerScript : MonoBehaviour
                     ingredientToCook = GameObject.Find("/Ingredients/Flour");
                     if (ingredients.Contains(ingredientToCook))
                     {
-
                         cookText.gameObject.SetActive(true);
                         cookText.text = "Press E to make pasta";
                     }
@@ -168,7 +163,6 @@ public class PlayerScript : MonoBehaviour
                     ingredientToCook = GameObject.Find("/Ingredients/Cheese");
                     if (ingredients.Contains(ingredientToCook))
                     {
-
                         cookText.gameObject.SetActive(true);
                         cookText.text = "Press E to slice the cheese";
                     }
@@ -178,7 +172,6 @@ public class PlayerScript : MonoBehaviour
                     ingredientToCook = GameObject.Find("/Ingredients/Meat");
                     if (ingredients.Contains(ingredientToCook))
                     {
-
                         cookText.gameObject.SetActive(true);
                         cookText.text = "Press E to grind meat";
                     }
