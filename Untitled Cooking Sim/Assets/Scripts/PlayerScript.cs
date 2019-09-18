@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerScript : MonoBehaviour
 {
@@ -9,6 +10,8 @@ public class PlayerScript : MonoBehaviour
     private float speed;
     private float sprintSpeed;
     private List<GameObject> ingredients;
+    private GameObject ingredientToCook;
+    public Text cookText;
 
     private void Start()
     {
@@ -17,7 +20,6 @@ public class PlayerScript : MonoBehaviour
         ingredients = new List<GameObject>();
     }
 
-    // Update is called once per frame
     void Update()
     {
         xSpeed = Input.GetAxisRaw("Horizontal");
@@ -39,41 +41,109 @@ public class PlayerScript : MonoBehaviour
         }
     }
 
-    private void OnTriggerEnter(Collider ingredientCollider)
+    private void OnTriggerEnter(Collider other)
     {
-        if (ingredientCollider.gameObject.CompareTag("Ingredient"))
+        if (other.gameObject.CompareTag("Ingredient"))
         {
-            var ingredientGo = ingredientCollider.gameObject;
+            var ingredientGo = other.gameObject;
             ingredients.Add(ingredientGo);
-            ingredientCollider.gameObject.SetActive(false);
-            //for (int i = 0; i < ingredients.Count; i++)
-            //{
-            //    Debug.Log(ingredients[i].name);
-            //}
+            other.gameObject.GetComponent<Renderer>().enabled = false;
+        }
+    }
+
+    private void OnTriggerStay(Collider other)
+    {
+        string cookWareName = other.gameObject.name;
+
+        switch (cookWareName)
+        {
+            case "Pot":
+                ingredientToCook = GameObject.Find("/Ingredients/Tomato");
+                if (ingredients.Contains(ingredientToCook) == false)
+                {
+                    cookText.gameObject.SetActive(true);
+                    cookText.text = "Missing tomatoes";
+                }
+                break;
+
+            case "Mixer":
+                ingredientToCook = GameObject.Find("/Ingredients/Flour");
+                if (ingredients.Contains(ingredientToCook) == false)
+                {
+                    cookText.gameObject.SetActive(true);
+                    cookText.text = "Missing flour";
+                }
+                break;
+
+            case "CuttingBoard":
+                ingredientToCook = GameObject.Find("/Ingredients/Cheese");
+                if (ingredients.Contains(ingredientToCook) == false)
+                {
+                    cookText.gameObject.SetActive(true);
+                    cookText.text = "Missing cheese";
+                }
+                break;
+
+            case "Grinder":
+                ingredientToCook = GameObject.Find("/Ingredients/Niku");
+                if (ingredients.Contains(ingredientToCook) == false)
+                {
+                    cookText.gameObject.SetActive(true);
+                    cookText.text = "Missing meat";
+                }
+                break;
         }
 
-        if (ingredients.Count > 0)
+        if (ingredients.Count > 0 && other.gameObject.tag != "Ingredient")
         {
-            string ingredientName = ingredientCollider.gameObject.name;
 
-            switch (ingredientName)
+            switch (cookWareName)
             {
-                case "Tomato":
-                    Debug.Log("Tomato");
+                case "Pot":
+                    ingredientToCook = GameObject.Find("/Ingredients/Tomato");
+                    if (ingredients.Contains(ingredientToCook))
+                    {
+                        
+                        cookText.gameObject.SetActive(true);
+                        cookText.text = "Press E to make sauce";
+                    }
                     break;
 
-                case "Flour":
-                    Debug.Log("Flour");
+                case "Mixer":
+                    ingredientToCook = GameObject.Find("/Ingredients/Flour");
+                    if (ingredients.Contains(ingredientToCook))
+                    {
+
+                        cookText.gameObject.SetActive(true);
+                        cookText.text = "Press E to make pasta";
+                    }
                     break;
 
-                case "Cheese":
-                    Debug.Log("Cheese");
+                case "CuttingBoard":
+                    ingredientToCook = GameObject.Find("/Ingredients/Cheese");
+                    if (ingredients.Contains(ingredientToCook))
+                    {
+
+                        cookText.gameObject.SetActive(true);
+                        cookText.text = "Press E to slice the cheese";
+                    }
                     break;
 
-                case "Niku":
-                    Debug.Log("Niku");
+                case "Grinder":
+                    ingredientToCook = GameObject.Find("/Ingredients/Niku");
+                    if (ingredients.Contains(ingredientToCook))
+                    {
+
+                        cookText.gameObject.SetActive(true);
+                        cookText.text = "Press E to grind meat";
+                    }
                     break;
             }
         }
+    }
+
+    private void OnTriggerExit()
+    {
+        cookText.gameObject.SetActive(false);
     }
 }
