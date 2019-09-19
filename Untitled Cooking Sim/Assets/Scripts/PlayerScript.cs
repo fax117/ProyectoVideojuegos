@@ -9,8 +9,16 @@ public class PlayerScript : MonoBehaviour
     private float zSpeed;
     private float speed;
     private float sprintSpeed;
+
     private List<GameObject> ingredients;
     private GameObject ingredientToCook;
+
+    private List<GameObject> doneIngredients;
+    public GameObject sauce;
+    public GameObject dough;
+    public GameObject shreddedCheese;
+    public GameObject meatCubes;
+
     public Text cookText;
     public RawImage cheeseIcon;
     public RawImage flourIcon;
@@ -22,8 +30,7 @@ public class PlayerScript : MonoBehaviour
         speed = 10f;
         sprintSpeed = 7f;
         ingredients = new List<GameObject>();
-       
-
+        doneIngredients = new List<GameObject>();
     }
 
     void Update()
@@ -63,28 +70,24 @@ public class PlayerScript : MonoBehaviour
         switch (ingredientName)
         {
             case "Cheese":
-                Debug.Log("cheese");
                 tempAlpha = cheeseIcon.color;
                 tempAlpha.a = 1f;
                 cheeseIcon.color = tempAlpha;
                 break;
 
             case "Flour":
-                Debug.Log("flour");
                 tempAlpha = flourIcon.color;
                 tempAlpha.a = 1f;
                 flourIcon.color = tempAlpha;
                 break;
 
             case "Meat":
-                Debug.Log("meat");
                 tempAlpha = meatIcon.color;
                 tempAlpha.a = 1f;
                 meatIcon.color = tempAlpha;
                 break;
 
             case "Tomato":
-                Debug.Log("tomato");
                 tempAlpha = cheeseIcon.color;
                 tempAlpha.a = 1f;
                 tomatoIcon.color = tempAlpha;
@@ -147,6 +150,15 @@ public class PlayerScript : MonoBehaviour
                     {
                         cookText.gameObject.SetActive(true);
                         cookText.text = "Press E to make sauce";
+                        if (Input.GetKeyDown(KeyCode.E))
+                        {
+                            //Invoke("ShowIngredient(sauce)", 1f);
+                            sauce.gameObject.SetActive(true);
+                        }
+                        if (sauce.gameObject.activeSelf == true)
+                        {
+                            cookText.text = "Sauce done";
+                        }
                     }
                     break;
 
@@ -155,7 +167,15 @@ public class PlayerScript : MonoBehaviour
                     if (ingredients.Contains(ingredientToCook))
                     {
                         cookText.gameObject.SetActive(true);
-                        cookText.text = "Press E to make pasta";
+                        cookText.text = "Press E to make dough";
+                        if (Input.GetKeyDown(KeyCode.E))
+                        {
+                            dough.gameObject.SetActive(true);
+                        }
+                        if (dough.gameObject.activeSelf == true)
+                        {
+                            cookText.text = "Dough ready";
+                        }
                     }
                     break;
 
@@ -165,6 +185,14 @@ public class PlayerScript : MonoBehaviour
                     {
                         cookText.gameObject.SetActive(true);
                         cookText.text = "Press E to slice the cheese";
+                        if (Input.GetKeyDown(KeyCode.E))
+                        {
+                            shreddedCheese.gameObject.SetActive(true);
+                        }
+                        if (shreddedCheese.gameObject.activeSelf == true)
+                        {
+                            cookText.text = "Cheese shredded";
+                        }
                     }
                     break;
 
@@ -174,9 +202,24 @@ public class PlayerScript : MonoBehaviour
                     {
                         cookText.gameObject.SetActive(true);
                         cookText.text = "Press E to grind meat";
+                        if (Input.GetKeyDown(KeyCode.E))
+                        {
+                            meatCubes.gameObject.SetActive(true);
+                        }
+                        if (meatCubes.gameObject.activeSelf == true)
+                        {
+                            cookText.text = "Meat grinded";
+                        }
                     }
                     break;
             }
+        }
+
+        if (other.gameObject.CompareTag("DoneIngredient"))
+        {
+            var doneIngredientGo = other.gameObject;
+            doneIngredients.Add(doneIngredientGo);
+            other.gameObject.GetComponent<Renderer>().enabled = false;
         }
     }
 
@@ -184,4 +227,14 @@ public class PlayerScript : MonoBehaviour
     {
         cookText.gameObject.SetActive(false);
     }
+
+    //private void ShowIngredient(GameObject ingredientReady)
+    //{
+    //    ingredientReady.gameObject.SetActive(true);
+
+    //    if(ingredientReady.gameObject.activeSelf == true)
+    //    {
+    //        cookText.text = "Done!";
+    //    }
+    //}
 }

@@ -8,6 +8,7 @@ TagManager:
   - Ingredient
   - Oven
   - Cookware
+  - DoneIngredient
   layers:
   - Default
   - TransparentFX
