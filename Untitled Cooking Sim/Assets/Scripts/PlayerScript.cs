@@ -221,6 +221,11 @@ public class PlayerScript : MonoBehaviour
             doneIngredients.Add(doneIngredientGo);
             other.gameObject.GetComponent<Renderer>().enabled = false;
         }
+
+        if (other.gameObject.CompareTag("Pan"))
+        {
+            other.gameObject.SetActive(false);
+        }
     }
 
     private void OnTriggerExit()
