@@ -12,7 +12,7 @@ public class PlayerScript : MonoBehaviour
     
     //Galaxy style movement 
     public float jumpHeight;
-    public float gravity;
+    private float gravity;
     public bool onGround;
     private float distanceToGround;
     public GameObject groundCheck;
