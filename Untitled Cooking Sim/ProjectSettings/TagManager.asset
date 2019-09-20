@@ -10,6 +10,9 @@ TagManager:
   - Cookware
   - DoneIngredient
   - Pan
+  - Tray
+  - Pizza
+  - Deliver
   layers:
   - Default
   - TransparentFX

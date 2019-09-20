@@ -31,8 +31,13 @@ public class PlayerScript : MonoBehaviour
     public GameObject dough;
     public GameObject shreddedCheese;
     public GameObject meatCubes;
+    public GameObject rawPizza;
+    public GameObject pizza;
+
+    private List<GameObject> pizzas;
 
     public Text cookText;
+    public Text winText;
     public RawImage cheeseIcon;
     public RawImage flourIcon;
     public RawImage meatIcon;
@@ -51,6 +56,7 @@ public class PlayerScript : MonoBehaviour
 
         ingredients = new List<GameObject>();
         doneIngredients = new List<GameObject>();
+        pizzas = new List<GameObject>();
     }
 
     void Update()
@@ -131,7 +137,7 @@ public class PlayerScript : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.LeftShift))
         {
-            speed += sprintSpeed; 
+            speed += sprintSpeed;
         }
 
         if (Input.GetKeyUp(KeyCode.LeftShift))
@@ -181,7 +187,18 @@ public class PlayerScript : MonoBehaviour
                 tomatoIcon.color = tempAlpha;
                 break;
         }
-       
+
+        if (other.gameObject.CompareTag("DoneIngredient"))
+        {
+            var doneIngredientGo = other.gameObject;
+            doneIngredients.Add(doneIngredientGo);
+            other.gameObject.GetComponent<Renderer>().enabled = false;
+        }
+
+        if (other.gameObject.CompareTag("Pan"))
+        {
+            other.gameObject.SetActive(false);
+        }
     }
 
     private void OnTriggerStay(Collider other)
@@ -303,16 +320,93 @@ public class PlayerScript : MonoBehaviour
             }
         }
 
-        if (other.gameObject.CompareTag("DoneIngredient"))
+        if (other.gameObject.CompareTag("Tray"))
         {
-            var doneIngredientGo = other.gameObject;
-            doneIngredients.Add(doneIngredientGo);
-            other.gameObject.GetComponent<Renderer>().enabled = false;
+            if (doneIngredients.Count >= 4)
+            {
+                cookText.gameObject.SetActive(true);
+                cookText.text = "F to prepare pizza";
+                if (Input.GetKeyDown(KeyCode.F))
+                {
+                    cookText.gameObject.SetActive(true);
+                    rawPizza.gameObject.SetActive(true);
+                }
+            }
+            else
+            {
+                cookText.gameObject.SetActive(true);
+                cookText.text = "Gather all the ingredients and cook them!";
+            }
+
+            if (rawPizza.activeSelf == true)
+            {
+                cookText.text = "X to pick up pizza";
+                if (Input.GetKeyDown(KeyCode.X))
+                {
+                    rawPizza.gameObject.SetActive(false);
+                    pizzas.Add(rawPizza);
+                }
+            }
+
+            if (pizzas.Count > 0)
+            {
+                cookText.text = "Cook your pizza";
+            }
         }
 
-        if (other.gameObject.CompareTag("Pan"))
+        if (other.gameObject.CompareTag("Oven"))
         {
-            other.gameObject.SetActive(false);
+            if (pizzas.Count > 0)
+            {
+                cookText.gameObject.SetActive(true);
+                cookText.text = "F to cook pizza";
+                if (Input.GetKeyDown(KeyCode.F))
+                {
+                    pizza.gameObject.SetActive(true);
+                    pizzas.Remove(rawPizza);
+                }
+
+            }
+            else
+            {
+                cookText.gameObject.SetActive(true);
+                cookText.text = "Gather all the ingredients and cook them!";
+            }
+        }
+
+        if (other.gameObject == pizza)
+        {
+            cookText.gameObject.SetActive(true);
+            cookText.text = "Press F to pick up and deliver";
+            if (Input.GetKeyDown(KeyCode.F))
+            {
+                pizzas.Add(pizza);
+                pizza.gameObject.SetActive(false);
+                cookText.gameObject.SetActive(false);
+            }
+        }
+
+        if (other.gameObject.CompareTag("Deliver"))
+        {
+            cookText.gameObject.SetActive(true);
+            cookText.text = "Cook first";
+            if (pizzas.Contains(pizza))
+            {
+                
+                cookText.text = "F to deliver";
+                winText.text = "Well done!";
+                if (Input.GetKeyDown(KeyCode.F))
+                {
+                    cookText.gameObject.SetActive(false);
+                    winText.gameObject.SetActive(true);
+                    pizzas.Clear();
+                }
+            }
+
+            if (winText.gameObject.activeSelf == true)
+            {
+                cookText.gameObject.SetActive(false);
+            }
         }
     }
 
