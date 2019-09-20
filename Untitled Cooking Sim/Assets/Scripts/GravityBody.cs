@@ -6,7 +6,7 @@ using UnityEngine;
 public class GravityBody : MonoBehaviour
 {
 
-    GravityAtractor planet;
+    public GravityAtractor planet;
     Rigidbody rigidbody;
 
     void Awake()

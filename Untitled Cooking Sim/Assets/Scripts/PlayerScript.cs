@@ -90,16 +90,18 @@ public class PlayerScript : MonoBehaviour
 
 
         //Gavity and Rotation
-        Vector3 gravDirection = (transform.position - planet.transform.position).normalized;
+       /* Vector3 gravDirection = (transform.position - planet.transform.position).normalized;
 
         if (onGround == false)
         {
             rb.AddForce(gravDirection * -gravity);
         }
 
-        Quaternion toRotation = Quaternion.FromToRotation(transform.up, groundNormal) * transform.rotation;
+        Quaternion toRotation = Quaternion.FromToRotation(transform.up, gravDirection) * transform.rotation;
         transform.rotation = toRotation;
-        groundCheck.transform.position = transform.position;
+        groundCheck.transform.rotation = toRotation;*/
+
+
 
         Jump();
         Sprint();
@@ -107,14 +109,10 @@ public class PlayerScript : MonoBehaviour
 
     private void ChangePlanet(Collider collision){
         if(collision.transform != planet.transform){
+            var pt = collision.gameObject.GetComponent<GravityAtractor>();
             planet = collision.transform.gameObject;
 
-            Vector3 gravDirection = (transform.position - planet.transform.position).normalized;
-            Quaternion toRotation = Quaternion.FromToRotation(transform.up, gravDirection) * transform.rotation;
-            transform.rotation = toRotation;
-            
-            rb.velocity = Vector3.zero;
-            rb.AddForce(gravDirection * gravity);
+            transform.GetComponent<GravityBody>().planet = pt;
 
             playerPlaceholder.GetComponent<PlayerPlaceholder>().NewPlanet(planet);
 
