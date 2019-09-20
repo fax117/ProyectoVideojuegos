@@ -9,7 +9,20 @@ public class PlayerScript : MonoBehaviour
     private float zSpeed;
     private float speed;
     private float sprintSpeed;
+    
+    //Galaxy style movement 
+    public float jumpHeight;
+    public float gravity;
+    public bool onGround;
+    private float distanceToGround;
+    public GameObject groundCheck;
+    private Vector3 groundNormal;
+    public LayerMask layer;
+    private Rigidbody rb;
+    public GameObject planet;
+    public GameObject playerPlaceholder;
 
+    //Cooking
     private List<GameObject> ingredients;
     private GameObject ingredientToCook;
 
@@ -27,18 +40,92 @@ public class PlayerScript : MonoBehaviour
 
     private void Start()
     {
-        speed = 10f;
+        speed = 10f;    //tutorial = 4f;
         sprintSpeed = 7f;
+
+        jumpHeight = 1.5f;
+        gravity = 20;
+        onGround = true;
+        rb = GetComponent<Rigidbody>();
+        rb.freezeRotation = true;
+
         ingredients = new List<GameObject>();
         doneIngredients = new List<GameObject>();
     }
 
     void Update()
     {
-        xSpeed = Input.GetAxisRaw("Horizontal");
-        zSpeed = Input.GetAxisRaw("Vertical");
-        gameObject.transform.Translate(new Vector3(xSpeed * Time.deltaTime * speed, 0f, zSpeed * Time.deltaTime * speed));
+        //Movement
+        xSpeed = Input.GetAxisRaw("Horizontal") * Time.deltaTime * speed;
+        zSpeed = Input.GetAxisRaw("Vertical") * Time.deltaTime * speed;
+
+        transform.Translate(xSpeed, 0f, zSpeed);
+
+        //Local Rotation
+        if (Input.GetKey(KeyCode.E))
+        {
+            transform.Rotate(0, 150 * Time.deltaTime, 0);
+        }
+        if (Input.GetKey(KeyCode.Q))
+        {
+            transform.Rotate(0, -150 * Time.deltaTime, 0);
+        }
+
+        //Ground Control
+        RaycastHit hit = new RaycastHit();
+        if (Physics.Raycast(groundCheck.transform.position, -groundCheck.transform.up, out hit, 10, layer) )
+        {
+            distanceToGround = hit.distance;
+            groundNormal = hit.normal;
+
+            if(distanceToGround <= 0.2f)
+            {
+                onGround = true;
+            }
+            else
+            {
+                onGround = false;
+            }
+        }
+
+
+        //Gavity and Rotation
+        Vector3 gravDirection = (transform.position - planet.transform.position).normalized;
+
+        if (onGround == false)
+        {
+            rb.AddForce(gravDirection * -gravity);
+        }
+
+        Quaternion toRotation = Quaternion.FromToRotation(transform.up, groundNormal) * transform.rotation;
+        transform.rotation = toRotation;
+
+        Jump();
         Sprint();
+    }
+
+    private void ChangePlanet(Collider collision){
+        if(collision.transform != planet.transform){
+            planet = collision.transform.gameObject;
+
+            Vector3 gravDirection = (transform.position - planet.transform.position).normalized;
+            Quaternion toRotation = Quaternion.FromToRotation(transform.up, gravDirection) * transform.rotation;
+            transform.rotation = toRotation;
+            
+            rb.velocity = Vector3.zero;
+            rb.AddForce(gravDirection * gravity);
+
+            playerPlaceholder.GetComponent<PlayerPlaceholder>().NewPlanet(planet);
+
+        }
+    }
+
+    private void Jump()
+    {
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            rb.AddForce(transform.up * 40000 * jumpHeight * Time.deltaTime);
+        }
     }
 
     private void Sprint()
@@ -56,6 +143,9 @@ public class PlayerScript : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        if(other.gameObject.CompareTag("Planet"))
+            ChangePlanet(other);
+            
         if (other.gameObject.CompareTag("Ingredient"))
         {
             var ingredientGo = other.gameObject;
@@ -65,7 +155,6 @@ public class PlayerScript : MonoBehaviour
 
         var ingredientName = other.name;
         Color tempAlpha;
-        
 
         switch (ingredientName)
         {
@@ -149,8 +238,8 @@ public class PlayerScript : MonoBehaviour
                     if (ingredients.Contains(ingredientToCook))
                     {
                         cookText.gameObject.SetActive(true);
-                        cookText.text = "Press E to make sauce";
-                        if (Input.GetKeyDown(KeyCode.E))
+                        cookText.text = "Press F to make sauce";
+                        if (Input.GetKeyDown(KeyCode.F))
                         {
                             //Invoke("ShowIngredient(sauce)", 1f);
                             sauce.gameObject.SetActive(true);
@@ -167,8 +256,8 @@ public class PlayerScript : MonoBehaviour
                     if (ingredients.Contains(ingredientToCook))
                     {
                         cookText.gameObject.SetActive(true);
-                        cookText.text = "Press E to make dough";
-                        if (Input.GetKeyDown(KeyCode.E))
+                        cookText.text = "Press F to make dough";
+                        if (Input.GetKeyDown(KeyCode.F))
                         {
                             dough.gameObject.SetActive(true);
                         }
@@ -184,8 +273,8 @@ public class PlayerScript : MonoBehaviour
                     if (ingredients.Contains(ingredientToCook))
                     {
                         cookText.gameObject.SetActive(true);
-                        cookText.text = "Press E to slice the cheese";
-                        if (Input.GetKeyDown(KeyCode.E))
+                        cookText.text = "Press F to slice the cheese";
+                        if (Input.GetKeyDown(KeyCode.F))
                         {
                             shreddedCheese.gameObject.SetActive(true);
                         }
@@ -201,8 +290,8 @@ public class PlayerScript : MonoBehaviour
                     if (ingredients.Contains(ingredientToCook))
                     {
                         cookText.gameObject.SetActive(true);
-                        cookText.text = "Press E to grind meat";
-                        if (Input.GetKeyDown(KeyCode.E))
+                        cookText.text = "Press F to grind meat";
+                        if (Input.GetKeyDown(KeyCode.F))
                         {
                             meatCubes.gameObject.SetActive(true);
                         }
