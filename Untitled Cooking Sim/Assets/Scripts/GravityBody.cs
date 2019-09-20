@@ -15,7 +15,7 @@ public class GravityBody : MonoBehaviour
         rigidbody = GetComponent<Rigidbody>();
 
         rigidbody.useGravity = false;
-        rigidbody.constraints = RigidbodyConstraints.FreezeRotation;
+        //rigidbody.constraints = RigidbodyConstraints.FreezeRotation;
     }
 
     void FixedUpdate()

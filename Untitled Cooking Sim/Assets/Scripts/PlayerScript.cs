@@ -99,7 +99,7 @@ public class PlayerScript : MonoBehaviour
 
         Quaternion toRotation = Quaternion.FromToRotation(transform.up, groundNormal) * transform.rotation;
         transform.rotation = toRotation;
-        groundCheck.transform.rotation = toRotation;
+        groundCheck.transform.position = transform.position;
 
         Jump();
         Sprint();

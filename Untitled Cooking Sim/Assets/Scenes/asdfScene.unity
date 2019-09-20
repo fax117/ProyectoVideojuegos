@@ -380,6 +380,16 @@ PrefabInstance:
       propertyPath: onGround
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 901971074151284423, guid: 60c53fd4d379b0b4288f8fd4d58963d0,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 901971074151284423, guid: 60c53fd4d379b0b4288f8fd4d58963d0,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.57
+      objectReference: {fileID: 0}
     - target: {fileID: 4739410715909733516, guid: 60c53fd4d379b0b4288f8fd4d58963d0,
         type: 3}
       propertyPath: m_IsActive
@@ -389,16 +399,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: PlayerCamera
-      objectReference: {fileID: 0}
-    - target: {fileID: 901971074151284423, guid: 60c53fd4d379b0b4288f8fd4d58963d0,
-        type: 3}
-      propertyPath: m_RootOrder
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 901971074151284423, guid: 60c53fd4d379b0b4288f8fd4d58963d0,
-        type: 3}
-      propertyPath: m_LocalPosition.y
-      value: -0.5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 60c53fd4d379b0b4288f8fd4d58963d0, type: 3}
