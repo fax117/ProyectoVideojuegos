@@ -326,10 +326,6 @@ public class PlayerScript : MonoBehaviour
     private void OnTriggerExit()
     {
         cookText.gameObject.SetActive(false);
-        for (int i = 0; i < pizzas.Count; i++)
-        {
-            Debug.Log(pizzas[i]);
-        }
     }
 
     //private void ShowIngredient(GameObject ingredientReady)
