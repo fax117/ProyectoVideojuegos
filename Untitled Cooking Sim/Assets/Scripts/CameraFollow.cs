@@ -18,8 +18,8 @@ public class CameraFollow : MonoBehaviour
     {
         if (Input.GetMouseButton(1))
         {
+            transform.RotateAround(target.transform.position, transform.up, Input.GetAxis("Mouse X") * xSpeed );
             //transform.RotateAround(target.transform.position, transform.up, Input.GetAxis("Mouse X") * xSpeed );
-            transform.RotateAround(target.transform.position, transform.forward, Input.GetAxis("Mouse X") * xSpeed );
             transform.RotateAround(target.transform.position, transform.right, -Input.GetAxis("Mouse Y") * xSpeed );
         }
 
