@@ -11,7 +11,7 @@ public class GravityBody : MonoBehaviour
 
     void Awake()
     {
-        planet = GameObject.FindGameObjectWithTag("Planet").GetComponent<GravityAtractor>();
+        //planet = GameObject.FindGameObjectWithTag("Planet").GetComponent<GravityAtractor>();
         rigidbody = GetComponent<Rigidbody>();
 
         rigidbody.useGravity = false;
