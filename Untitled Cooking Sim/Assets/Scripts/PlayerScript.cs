@@ -37,11 +37,14 @@ public class PlayerScript : MonoBehaviour
     private List<GameObject> pizzas;
 
     public Text cookText;
-    public Text winText;
+    public RawImage winText;
     public RawImage cheeseIcon;
     public RawImage flourIcon;
     public RawImage meatIcon;
     public RawImage tomatoIcon;
+
+    public GameObject recipe;
+    private bool isRecipeOn = false;
 
     private void Start()
     {
@@ -92,20 +95,35 @@ public class PlayerScript : MonoBehaviour
             {
                 onGround = false;
             }
+
+            
+        }
+
+        if (Input.GetKeyDown(KeyCode.Tab) && isRecipeOn == false)
+        {
+            recipe.SetActive(true);
+            isRecipeOn = true;
+        }
+
+        if (Input.GetKeyDown(KeyCode.H) && isRecipeOn == true)
+        {
+
+            recipe.SetActive(false);
+            isRecipeOn = false;
         }
 
 
         //Gavity and Rotation
-       /* Vector3 gravDirection = (transform.position - planet.transform.position).normalized;
+        /* Vector3 gravDirection = (transform.position - planet.transform.position).normalized;
 
-        if (onGround == false)
-        {
-            rb.AddForce(gravDirection * -gravity);
-        }
+         if (onGround == false)
+         {
+             rb.AddForce(gravDirection * -gravity);
+         }
 
-        Quaternion toRotation = Quaternion.FromToRotation(transform.up, gravDirection) * transform.rotation;
-        transform.rotation = toRotation;
-        groundCheck.transform.rotation = toRotation;*/
+         Quaternion toRotation = Quaternion.FromToRotation(transform.up, gravDirection) * transform.rotation;
+         transform.rotation = toRotation;
+         groundCheck.transform.rotation = toRotation;*/
 
 
 
@@ -394,7 +412,7 @@ public class PlayerScript : MonoBehaviour
             {
                 
                 cookText.text = "F to deliver";
-                winText.text = "Well done!";
+                //winText.text = "Well done!";
                 if (Input.GetKeyDown(KeyCode.F))
                 {
                     cookText.gameObject.SetActive(false);
