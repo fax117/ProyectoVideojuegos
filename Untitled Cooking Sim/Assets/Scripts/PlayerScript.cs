@@ -143,9 +143,9 @@ public class PlayerScript : MonoBehaviour
     private void Jump()
     {
         {
-            if (Input.GetKeyDown(KeyCode.Space) && onGround)
+            if (Input.GetKeyDown(KeyCode.Space))
             {
-                rb.AddForce(transform.up * 20000 * jumpHeight * Time.deltaTime);
+                rb.AddForce(transform.up * 30000 * jumpHeight * Time.deltaTime);
             }
         }        
     }
