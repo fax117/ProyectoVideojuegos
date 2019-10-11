@@ -44,7 +44,6 @@ public class PlayerScript : MonoBehaviour
     public RawImage tomatoIcon;
 
     public GameObject recipe;
-    private bool isRecipeOn = false;
 
     private void Start()
     {
@@ -99,18 +98,16 @@ public class PlayerScript : MonoBehaviour
             
         }
 
-        if (Input.GetKeyDown(KeyCode.Tab) && isRecipeOn == false)
+        if (Input.GetKey(KeyCode.Tab))
         {
             recipe.SetActive(true);
-            isRecipeOn = true;
         }
-
-        if (Input.GetKeyDown(KeyCode.H) && isRecipeOn == true)
+        else
         {
-
             recipe.SetActive(false);
-            isRecipeOn = false;
         }
+
+
 
 
         //Gavity and Rotation
