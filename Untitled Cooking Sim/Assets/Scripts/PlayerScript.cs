@@ -9,7 +9,10 @@ public class PlayerScript : MonoBehaviour
     private float zSpeed;
     private float speed;
     private float sprintSpeed;
-    
+    private float timeRun;
+    private float minsLeft, secsLeft, secs, mins;
+
+
     //Galaxy style movement 
     public float jumpHeight;
     private float gravity;
@@ -37,11 +40,14 @@ public class PlayerScript : MonoBehaviour
     private List<GameObject> pizzas;
 
     public Text cookText;
+    public Text timerText;
     public RawImage winText;
     public RawImage cheeseIcon;
     public RawImage flourIcon;
     public RawImage meatIcon;
     public RawImage tomatoIcon;
+    public RawImage gameOver;
+    public Button restartButton;
 
     public GameObject recipe;
 
@@ -49,6 +55,7 @@ public class PlayerScript : MonoBehaviour
     {
         speed = 12f;    //tutorial = 4f;
         sprintSpeed = 7f;
+        timeRun = 180;
 
         jumpHeight = 1.5f;
         gravity = 20;
@@ -126,6 +133,7 @@ public class PlayerScript : MonoBehaviour
 
         Jump();
         Sprint();
+        Timer();
     }
 
     private void ChangePlanet(Collider collision){
@@ -416,6 +424,8 @@ public class PlayerScript : MonoBehaviour
                 {
                     cookText.gameObject.SetActive(false);
                     winText.gameObject.SetActive(true);
+                    restartButton.gameObject.SetActive(true);
+                    timerText.gameObject.SetActive(false);
                     pizzas.Clear();
                 }
             }
@@ -441,4 +451,36 @@ public class PlayerScript : MonoBehaviour
     //        cookText.text = "Done!";
     //    }
     //}
+
+    private void Timer()
+    {
+        if (timeRun > 60)
+        {
+            minsLeft = timeRun / 60;
+            secsLeft = timeRun % 60;
+            mins = Mathf.RoundToInt(timeRun -= Time.deltaTime) / 60;
+            secs = Mathf.Round(secsLeft -= Time.deltaTime) % 60;
+        }
+        else
+        {
+            mins = 00;
+            secs = Mathf.Round(timeRun -= Time.deltaTime) % 60;
+        }
+
+        timerText.text = "Timer: " + mins + ":" + secs;
+
+        if (secs < 10)
+        {
+            timerText.text = "Timer: " + mins + ":0" + secs;
+        }
+
+        if (timeRun <= 0)
+        {
+            Time.timeScale = 0;
+            gameOver.gameObject.SetActive(true);
+            timerText.gameObject.SetActive(false);
+            restartButton.gameObject.SetActive(true);
+        }
+
+    }
 }

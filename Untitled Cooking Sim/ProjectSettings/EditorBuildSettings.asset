@@ -12,6 +12,9 @@ EditorBuildSettings:
     path: Assets/Scenes/HowToPlay.unity
     guid: ce849e46e914c43129d024c2b51b1eef
   - enabled: 1
+    path: Assets/Scenes/LoadingScreen.unity
+    guid: af022309e32114a3e9a32c6007f42b9c
+  - enabled: 1
     path: Assets/Scenes/LevelOne.unity
     guid: 9fc0d4010bbf28b4594072e72b8655ab
   m_configObjects: {}
