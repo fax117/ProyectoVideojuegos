@@ -47,7 +47,7 @@ public class PlayerScript : MonoBehaviour
 
     private void Start()
     {
-        speed = 10f;    //tutorial = 4f;
+        speed = 12f;    //tutorial = 4f;
         sprintSpeed = 7f;
 
         jumpHeight = 1.5f;
@@ -427,7 +427,7 @@ public class PlayerScript : MonoBehaviour
         }
     }
 
-    private void OnTriggerExit()
+    private void OnTriggerExit(Collider other)
     {
         cookText.gameObject.SetActive(false);
     }
