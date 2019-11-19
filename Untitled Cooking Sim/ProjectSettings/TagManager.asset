@@ -15,6 +15,7 @@ TagManager:
   - Deliver
   - Rocket
   - DestroyRocket
+  - ShipMovement
   layers:
   - Default
   - TransparentFX

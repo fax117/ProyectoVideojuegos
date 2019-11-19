@@ -7,21 +7,23 @@ public class BackgroundInteraction : MonoBehaviour
 
     public GameObject rocket;
     public Transform finalPosition;
-    public Vector3 targetPosition;
+    private Vector3 targetPosition;
     float speed;
-    bool rocketShip;
+    bool rocketMoving;
+
+
     // Start is called before the first frame update
     void Start()
     {
         targetPosition = rocket.transform.position;
         speed = 6;
-        rocketShip = false;
+        rocketMoving = false;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (rocketShip)
+        if (rocketMoving)
         {
             float distance = Vector3.Distance(rocket.transform.position, targetPosition);
             rocket.transform.position = Vector3.Lerp(rocket.transform.position, targetPosition, (Time.deltaTime * speed) / distance);
@@ -33,15 +35,14 @@ public class BackgroundInteraction : MonoBehaviour
                 }
             }
         }
-        
+
     }
 
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.CompareTag("Player") && gameObject.CompareTag("Rocket"))
         {
-            rocketShip = true;
-            rocket.GetComponentInChildren<ParticleSystem>().Play();
+            rocketMoving = true;
         }
         if (other.gameObject.CompareTag("DestroyRocket"))
         {
