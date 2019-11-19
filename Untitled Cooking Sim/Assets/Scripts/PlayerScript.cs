@@ -12,7 +12,6 @@ public class PlayerScript : MonoBehaviour
     private float timeRun;
     private float minsLeft, secsLeft, secs, mins;
 
-
     //Galaxy style movement 
     public float jumpHeight;
     private float gravity;
@@ -51,6 +50,14 @@ public class PlayerScript : MonoBehaviour
 
     public GameObject recipe;
 
+    public AudioSource audioPlayer;
+    public AudioClip doughSound;
+    public AudioClip graterSound;
+    public AudioClip chopSound;
+    public AudioClip boilingSound;
+    public AudioClip ovenDone;
+    public AudioClip pizzSplat;
+
     private void Start()
     {
         speed = 12f;    //tutorial = 4f;
@@ -66,6 +73,7 @@ public class PlayerScript : MonoBehaviour
         ingredients = new List<GameObject>();
         doneIngredients = new List<GameObject>();
         pizzas = new List<GameObject>();
+        audioPlayer = gameObject.GetComponent<AudioSource>();
     }
 
     void Update()
@@ -226,7 +234,7 @@ public class PlayerScript : MonoBehaviour
         }
     }
 
-    private void OnTriggerStay(Collider other)
+    private IEnumerator OnTriggerStay(Collider other)
     {
         string cookWareName = other.gameObject.name;
 
@@ -280,9 +288,15 @@ public class PlayerScript : MonoBehaviour
                     {
                         cookText.gameObject.SetActive(true);
                         cookText.text = "Press F to make sauce";
+                        if (audioPlayer.isPlaying)
+                        {
+                            cookText.text = "Preparing...";
+                        }
                         if (Input.GetKeyDown(KeyCode.F))
                         {
-                            //Invoke("ShowIngredient(sauce)", 1f);
+                            audioPlayer.clip = boilingSound;
+                            audioPlayer.Play();
+                            yield return new WaitForSeconds(3);
                             sauce.gameObject.SetActive(true);
                         }
                         if (sauce.gameObject.activeSelf == true)
@@ -298,8 +312,15 @@ public class PlayerScript : MonoBehaviour
                     {
                         cookText.gameObject.SetActive(true);
                         cookText.text = "Press F to make dough";
+                        if (audioPlayer.isPlaying)
+                        {
+                            cookText.text = "Preparing...";
+                        }
                         if (Input.GetKeyDown(KeyCode.F))
                         {
+                            audioPlayer.clip = doughSound;
+                            audioPlayer.Play();
+                            yield return new WaitForSeconds(3);
                             dough.gameObject.SetActive(true);
                         }
                         if (dough.gameObject.activeSelf == true)
@@ -315,8 +336,15 @@ public class PlayerScript : MonoBehaviour
                     {
                         cookText.gameObject.SetActive(true);
                         cookText.text = "Press F to slice the cheese";
+                        if (audioPlayer.isPlaying)
+                        {
+                            cookText.text = "Preparing...";
+                        }
                         if (Input.GetKeyDown(KeyCode.F))
                         {
+                            audioPlayer.clip = graterSound;
+                            audioPlayer.Play();
+                            yield return new WaitForSeconds(3);
                             shreddedCheese.gameObject.SetActive(true);
                         }
                         if (shreddedCheese.gameObject.activeSelf == true)
@@ -332,8 +360,15 @@ public class PlayerScript : MonoBehaviour
                     {
                         cookText.gameObject.SetActive(true);
                         cookText.text = "Press F to grind meat";
+                        if (audioPlayer.isPlaying)
+                        {
+                            cookText.text = "Preparing...";
+                        }
                         if (Input.GetKeyDown(KeyCode.F))
                         {
+                            audioPlayer.clip = chopSound;
+                            audioPlayer.Play();
+                            yield return new WaitForSeconds(3);
                             meatCubes.gameObject.SetActive(true);
                         }
                         if (meatCubes.gameObject.activeSelf == true)
@@ -351,9 +386,16 @@ public class PlayerScript : MonoBehaviour
             {
                 cookText.gameObject.SetActive(true);
                 cookText.text = "F to prepare pizza";
+                if (audioPlayer.isPlaying)
+                {
+                    cookText.text = "Preparing...";
+                }
                 if (Input.GetKeyDown(KeyCode.F))
                 {
                     cookText.gameObject.SetActive(true);
+                    audioPlayer.clip = pizzSplat;
+                    audioPlayer.Play();
+                    yield return new WaitForSeconds(0.5f);
                     rawPizza.gameObject.SetActive(true);
                 }
             }
@@ -387,6 +429,9 @@ public class PlayerScript : MonoBehaviour
                 cookText.text = "F to cook pizza";
                 if (Input.GetKeyDown(KeyCode.F))
                 {
+                    audioPlayer.clip = ovenDone;
+                    audioPlayer.Play();
+                    yield return new WaitForSeconds(3);
                     pizza.gameObject.SetActive(true);
                     pizzas.Remove(rawPizza);
                 }

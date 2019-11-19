@@ -54,6 +54,7 @@ public class BackgroundInteraction : MonoBehaviour
         if (other.gameObject.CompareTag("Player") && gameObject.CompareTag("Rocket"))
         {
             rocketMoving = true;
+            gameObject.GetComponent<AudioSource>().Play();
         }
         if (other.gameObject.CompareTag("DestroyRocket"))
         {
