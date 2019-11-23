@@ -64,9 +64,10 @@ public class BackgroundInteraction : MonoBehaviour
 
     IEnumerator MeteorShower()
     {
-        
-        Instantiate(meteor, spawner.transform.position, Quaternion.identity);
-        yield return new WaitForSeconds(Random.Range(1, 3));
+        meteor.GetComponent<Rigidbody>().AddForce(transform.forward * 3000);
+        var recentGO = Instantiate(meteor, spawner.transform.position, Quaternion.identity);
+        recentGO.GetComponent<Rigidbody>().AddForce(transform.forward * 3000);
+        yield return new WaitForSeconds(Random.Range(3, 5));
         StartCoroutine(DestroyGO());
         spawn = true;
     }
