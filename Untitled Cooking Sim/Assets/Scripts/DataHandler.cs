@@ -29,15 +29,15 @@ public class DataHandler : MonoBehaviour
 
     private void Update()
     {
-        //if (Input.GetKeyDown(KeyCode.S))
-        //{
-        //    Save();
-        //}
+        if (Input.GetKeyDown(KeyCode.S))
+        {
+            Save();
+        }
 
-        //if (Input.GetKeyDown(KeyCode.L))
-        //{
-        //    Load();
-        //}
+        if (Input.GetKeyDown(KeyCode.L))
+        {
+            Load();
+        }
     }
 
     public void Save()
