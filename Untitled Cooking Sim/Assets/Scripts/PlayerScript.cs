@@ -14,7 +14,7 @@ public class PlayerScript : MonoBehaviour
 
     //Galaxy style movement 
     public float jumpHeight;
-    private float gravity;
+    //private float gravity;
     public bool onGround;
     private float distanceToGround;
     public GameObject groundCheck;
@@ -65,7 +65,7 @@ public class PlayerScript : MonoBehaviour
         timeRun = 180;
 
         jumpHeight = 1.5f;
-        gravity = 20;
+        //gravity = 20;
         onGround = true;
         rb = GetComponent<Rigidbody>();
         rb.freezeRotation = true;
@@ -122,8 +122,16 @@ public class PlayerScript : MonoBehaviour
             recipe.SetActive(false);
         }
 
+        var ingredientsToCheck = GameObject.FindGameObjectsWithTag("Ingredient");
 
-
+        foreach (GameObject ingredientToCheck in ingredientsToCheck)
+        {
+            if (ingredients.Contains(ingredientToCheck))
+            {
+                ingredientToCheck.GetComponent<MeshRenderer>().enabled = false;
+                ingredientToCheck.GetComponent<Collider>().enabled = false;
+            }
+        }
 
         //Gavity and Rotation
         /* Vector3 gravDirection = (transform.position - planet.transform.position).normalized;
@@ -189,6 +197,7 @@ public class PlayerScript : MonoBehaviour
             var ingredientGo = other.gameObject;
             ingredients.Add(ingredientGo);
             other.gameObject.GetComponent<Renderer>().enabled = false;
+            other.gameObject.GetComponent<Collider>().enabled = false;
         }
 
         var ingredientName = other.name;
@@ -487,15 +496,15 @@ public class PlayerScript : MonoBehaviour
         cookText.gameObject.SetActive(false);
     }
 
-    //private void ShowIngredient(GameObject ingredientReady)
-    //{
-    //    ingredientReady.gameObject.SetActive(true);
+    private void ShowIngredient(GameObject ingredientReady)
+    {
+        ingredientReady.gameObject.SetActive(true);
 
-    //    if(ingredientReady.gameObject.activeSelf == true)
-    //    {
-    //        cookText.text = "Done!";
-    //    }
-    //}
+        if (ingredientReady.gameObject.activeSelf == true)
+        {
+            cookText.text = "Done!";
+        }
+    }
 
     private void Timer()
     {
