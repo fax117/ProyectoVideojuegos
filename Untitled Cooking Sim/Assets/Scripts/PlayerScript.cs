@@ -14,7 +14,7 @@ public class PlayerScript : MonoBehaviour
 
     //Galaxy style movement 
     public float jumpHeight;
-    private float gravity;
+    //private float gravity;
     public bool onGround;
     private float distanceToGround;
     public GameObject groundCheck;
@@ -25,10 +25,10 @@ public class PlayerScript : MonoBehaviour
     public GameObject playerPlaceholder;
 
     //Cooking
-    private List<GameObject> ingredients;
+    public List<GameObject> ingredients;
     private GameObject ingredientToCook;
 
-    private List<GameObject> doneIngredients;
+    public List<GameObject> doneIngredients;
     public GameObject sauce;
     public GameObject dough;
     public GameObject shreddedCheese;
@@ -36,7 +36,7 @@ public class PlayerScript : MonoBehaviour
     public GameObject rawPizza;
     public GameObject pizza;
 
-    private List<GameObject> pizzas;
+    public List<GameObject> pizzas;
 
     public Text cookText;
     public Text timerText;
@@ -65,7 +65,7 @@ public class PlayerScript : MonoBehaviour
         timeRun = 180;
 
         jumpHeight = 1.5f;
-        gravity = 20;
+        //gravity = 20;
         onGround = true;
         rb = GetComponent<Rigidbody>();
         rb.freezeRotation = true;
