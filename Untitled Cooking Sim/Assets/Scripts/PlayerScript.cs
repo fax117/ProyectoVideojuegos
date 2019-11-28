@@ -25,10 +25,10 @@ public class PlayerScript : MonoBehaviour
     public GameObject playerPlaceholder;
 
     //Cooking
-    private List<GameObject> ingredients;
+    public List<GameObject> ingredients;
     private GameObject ingredientToCook;
 
-    private List<GameObject> doneIngredients;
+    public List<GameObject> doneIngredients;
     public GameObject sauce;
     public GameObject dough;
     public GameObject shreddedCheese;
@@ -36,7 +36,7 @@ public class PlayerScript : MonoBehaviour
     public GameObject rawPizza;
     public GameObject pizza;
 
-    private List<GameObject> pizzas;
+    public List<GameObject> pizzas;
 
     public Text cookText;
     public Text timerText;
