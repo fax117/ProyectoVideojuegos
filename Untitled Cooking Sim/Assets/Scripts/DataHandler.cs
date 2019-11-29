@@ -29,15 +29,7 @@ public class DataHandler : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.G))
-        {
-            Save();
-        }
 
-        if (Input.GetKeyDown(KeyCode.C))
-        {
-            Load();
-        }
     }
 
     public void Save()
@@ -46,12 +38,14 @@ public class DataHandler : MonoBehaviour
         Vector3 playerPosition = unit.transform.localPosition;
         List<GameObject> ingredients = unit.ingredients;
         List<GameObject> doneIngredients = unit.doneIngredients;
+        List<GameObject> pizzas = unit.pizzas;
 
         SaveObject saveObject = new SaveObject
         {
             ingredients = ingredients,
             playerPosition = playerPosition,
-            doneIngredients = doneIngredients
+            doneIngredients = doneIngredients,
+            pizzas = pizzas
         };
         string json = JsonUtility.ToJson(saveObject);
         SaveSystem.Save(json);
@@ -70,6 +64,7 @@ public class DataHandler : MonoBehaviour
             unit.transform.position = saveObject.playerPosition;
             unit.ingredients = saveObject.ingredients;
             unit.doneIngredients = saveObject.doneIngredients;
+            unit.pizzas = saveObject.pizzas;
         } else {
         }
     }
@@ -80,5 +75,6 @@ public class DataHandler : MonoBehaviour
         public Vector3 playerPosition;
         public List<GameObject> ingredients;
         public List<GameObject> doneIngredients;
+        public List<GameObject> pizzas;
     }
 }
