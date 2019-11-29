@@ -123,13 +123,15 @@ public class PlayerScript : MonoBehaviour
         }
 
         var ingredientsToCheck = GameObject.FindGameObjectsWithTag("Ingredient");
-
         foreach (GameObject ingredientToCheck in ingredientsToCheck)
         {
             if (ingredients.Contains(ingredientToCheck))
             {
                 ingredientToCheck.GetComponent<MeshRenderer>().enabled = false;
                 ingredientToCheck.GetComponent<Collider>().enabled = false;
+            }else{
+                ingredientToCheck.GetComponent<MeshRenderer>().enabled = true;
+                ingredientToCheck.GetComponent<Collider>().enabled = true;
             }
         }
 
@@ -144,8 +146,6 @@ public class PlayerScript : MonoBehaviour
          Quaternion toRotation = Quaternion.FromToRotation(transform.up, gravDirection) * transform.rotation;
          transform.rotation = toRotation;
          groundCheck.transform.rotation = toRotation;*/
-
-
 
         Jump();
         Sprint();
@@ -206,27 +206,55 @@ public class PlayerScript : MonoBehaviour
         switch (ingredientName)
         {
             case "Cheese":
-                tempAlpha = cheeseIcon.color;
-                tempAlpha.a = 1f;
-                cheeseIcon.color = tempAlpha;
+                var otherIngredient = GameObject.Find("/Ingredients/Cheese");
+                if(ingredients.Contains(otherIngredient)){
+                    tempAlpha = cheeseIcon.color;
+                    tempAlpha.a = 1f;
+                    cheeseIcon.color = tempAlpha;
+                }else{
+                    tempAlpha = cheeseIcon.color;
+                    tempAlpha.a = 0.2f;
+                    cheeseIcon.color = tempAlpha;
+                }
                 break;
 
             case "Flour":
-                tempAlpha = flourIcon.color;
-                tempAlpha.a = 1f;
-                flourIcon.color = tempAlpha;
+                otherIngredient = GameObject.Find("/Ingredients/Flour");
+                if(ingredients.Contains(otherIngredient)){
+                    tempAlpha = flourIcon.color;
+                    tempAlpha.a = 1f;
+                    flourIcon.color = tempAlpha;
+                }else{
+                    tempAlpha = cheeseIcon.color;
+                    tempAlpha.a = 0.2f;
+                    cheeseIcon.color = tempAlpha;
+                }
                 break;
 
             case "Meat":
-                tempAlpha = meatIcon.color;
-                tempAlpha.a = 1f;
-                meatIcon.color = tempAlpha;
+                otherIngredient = GameObject.Find("/Ingredients/Meat");
+                if(ingredients.Contains(otherIngredient)){
+                    tempAlpha = meatIcon.color;
+                    tempAlpha.a = 1f;
+                    meatIcon.color = tempAlpha;
+                }else{
+                    tempAlpha = cheeseIcon.color;
+                    tempAlpha.a = 0.2f;
+                    cheeseIcon.color = tempAlpha;
+                }
                 break;
 
             case "Tomato":
-                tempAlpha = cheeseIcon.color;
-                tempAlpha.a = 1f;
-                tomatoIcon.color = tempAlpha;
+                otherIngredient = GameObject.Find("/Ingredients/Tomato");
+                if(ingredients.Contains(otherIngredient)){
+                    tempAlpha = cheeseIcon.color;
+                    tempAlpha.a = 1f;
+                    tomatoIcon.color = tempAlpha;
+                }else{
+                    tempAlpha = cheeseIcon.color;
+                    tempAlpha.a = 0.2f;
+                    cheeseIcon.color = tempAlpha;
+                }
                 break;
         }
 
@@ -235,6 +263,7 @@ public class PlayerScript : MonoBehaviour
             var doneIngredientGo = other.gameObject;
             doneIngredients.Add(doneIngredientGo);
             other.gameObject.GetComponent<Renderer>().enabled = false;
+            other.gameObject.GetComponent<Collider>().enabled = false;
         }
 
         if (other.gameObject.CompareTag("Pan"))
