@@ -8,14 +8,14 @@ public class GravityBody : MonoBehaviour
 {
 
     public GravityAtractor planet;
-    Rigidbody rigidbody;
+    Rigidbody planetRigidbody;
 
     void Awake()
     {
         //planet = GameObject.FindGameObjectWithTag("Planet").GetComponent<GravityAtractor>();
-        rigidbody = GetComponent<Rigidbody>();
+        planetRigidbody = GetComponent<Rigidbody>();
 
-        rigidbody.useGravity = false;
+        planetRigidbody.useGravity = false;
         //rigidbody.constraints = RigidbodyConstraints.FreezeRotation;
     }
 

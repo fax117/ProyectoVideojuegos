@@ -13,6 +13,9 @@ TagManager:
   - Tray
   - Pizza
   - Deliver
+  - Rocket
+  - DestroyRocket
+  - ShipMovement
   layers:
   - Default
   - TransparentFX

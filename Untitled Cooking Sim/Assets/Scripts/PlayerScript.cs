@@ -14,10 +14,9 @@ public class PlayerScript : MonoBehaviour
     private float timeRun;
     private float minsLeft, secsLeft, secs, mins;
 
-
     //Galaxy style movement 
     public float jumpHeight;
-    private float gravity;
+    //private float gravity;
     public bool onGround;
     private float distanceToGround;
     public GameObject groundCheck;
@@ -28,10 +27,10 @@ public class PlayerScript : MonoBehaviour
     public GameObject playerPlaceholder;
 
     //Cooking
-    private List<GameObject> ingredients;
+    public List<GameObject> ingredients;
     private GameObject ingredientToCook;
 
-    private List<GameObject> doneIngredients;
+    public List<GameObject> doneIngredients;
     public GameObject sauce;
     public GameObject dough;
     public GameObject shreddedCheese;
@@ -39,7 +38,7 @@ public class PlayerScript : MonoBehaviour
     public GameObject rawPizza;
     public GameObject pizza;
 
-    private List<GameObject> pizzas;
+    public List<GameObject> pizzas;
 
     public Text cookText;
     public Text timerText;
@@ -53,6 +52,14 @@ public class PlayerScript : MonoBehaviour
 
     public GameObject recipe;
 
+    public AudioSource audioPlayer;
+    public AudioClip doughSound;
+    public AudioClip graterSound;
+    public AudioClip chopSound;
+    public AudioClip boilingSound;
+    public AudioClip ovenDone;
+    public AudioClip pizzSplat;
+
     private void Start()
     {
         speed = 20f;    //tutorial = 4f;
@@ -62,7 +69,7 @@ public class PlayerScript : MonoBehaviour
         rotationSpeed = 10f;
         
         jumpHeight = 1.5f;
-        gravity = 20;
+        //gravity = 20;
         onGround = true;
         rb = GetComponent<Rigidbody>();
         rb.freezeRotation = true;
@@ -70,6 +77,7 @@ public class PlayerScript : MonoBehaviour
         ingredients = new List<GameObject>();
         doneIngredients = new List<GameObject>();
         pizzas = new List<GameObject>();
+        audioPlayer = gameObject.GetComponent<AudioSource>();
     }
 
     void Update()
@@ -130,10 +138,59 @@ public class PlayerScript : MonoBehaviour
             {
                 onGround = false;
             }
-        }else{
-            Debug.DrawRay(groundCheck.transform.position, groundCheck.transform.TransformDirection(-Vector3.up) * 1000, Color.white);
-            Debug.Log("Did not Hit");
-        } 
+
+            
+        }
+
+        if (Input.GetKey(KeyCode.Tab))
+        {
+            recipe.SetActive(true);
+        }
+        else
+        {
+            recipe.SetActive(false);
+        }
+
+        var ingredientsToCheck = GameObject.FindGameObjectsWithTag("Ingredient");
+        foreach (GameObject ingredientToCheck in ingredientsToCheck)
+        {
+            if (ingredients.Contains(ingredientToCheck))
+            {
+                ingredientToCheck.GetComponent<MeshRenderer>().enabled = false;
+                ingredientToCheck.GetComponent<Collider>().enabled = false;
+            }else{
+                ingredientToCheck.GetComponent<MeshRenderer>().enabled = true;
+                ingredientToCheck.GetComponent<Collider>().enabled = true;
+            }
+        }
+
+        //Gavity and Rotation
+        /* Vector3 gravDirection = (transform.position - planet.transform.position).normalized;
+
+         if (onGround == false)
+         {
+             rb.AddForce(gravDirection * -gravity);
+         }
+
+         Quaternion toRotation = Quaternion.FromToRotation(transform.up, gravDirection) * transform.rotation;
+         transform.rotation = toRotation;
+         groundCheck.transform.rotation = toRotation;*/
+
+        Jump();
+        Sprint();
+        Timer();
+    }
+
+    private void ChangePlanet(Collider collision){
+        if(collision.transform != planet.transform){
+            var pt = collision.gameObject.GetComponent<GravityAtractor>();
+            planet = collision.transform.gameObject;
+
+            transform.GetComponent<GravityBody>().planet = pt;
+
+            playerPlaceholder.GetComponent<PlayerPlaceholder>().NewPlanet(planet);
+
+        }
     }
 
     private void Jump()
@@ -168,6 +225,7 @@ public class PlayerScript : MonoBehaviour
             var ingredientGo = other.gameObject;
             ingredients.Add(ingredientGo);
             other.gameObject.GetComponent<Renderer>().enabled = false;
+            other.gameObject.GetComponent<Collider>().enabled = false;
         }
 
         var ingredientName = other.name;
@@ -176,27 +234,55 @@ public class PlayerScript : MonoBehaviour
         switch (ingredientName)
         {
             case "Cheese":
-                tempAlpha = cheeseIcon.color;
-                tempAlpha.a = 1f;
-                cheeseIcon.color = tempAlpha;
+                var otherIngredient = GameObject.Find("/Ingredients/Cheese");
+                if(ingredients.Contains(otherIngredient)){
+                    tempAlpha = cheeseIcon.color;
+                    tempAlpha.a = 1f;
+                    cheeseIcon.color = tempAlpha;
+                }else{
+                    tempAlpha = cheeseIcon.color;
+                    tempAlpha.a = 0.2f;
+                    cheeseIcon.color = tempAlpha;
+                }
                 break;
 
             case "Flour":
-                tempAlpha = flourIcon.color;
-                tempAlpha.a = 1f;
-                flourIcon.color = tempAlpha;
+                otherIngredient = GameObject.Find("/Ingredients/Flour");
+                if(ingredients.Contains(otherIngredient)){
+                    tempAlpha = flourIcon.color;
+                    tempAlpha.a = 1f;
+                    flourIcon.color = tempAlpha;
+                }else{
+                    tempAlpha = cheeseIcon.color;
+                    tempAlpha.a = 0.2f;
+                    cheeseIcon.color = tempAlpha;
+                }
                 break;
 
             case "Meat":
-                tempAlpha = meatIcon.color;
-                tempAlpha.a = 1f;
-                meatIcon.color = tempAlpha;
+                otherIngredient = GameObject.Find("/Ingredients/Meat");
+                if(ingredients.Contains(otherIngredient)){
+                    tempAlpha = meatIcon.color;
+                    tempAlpha.a = 1f;
+                    meatIcon.color = tempAlpha;
+                }else{
+                    tempAlpha = cheeseIcon.color;
+                    tempAlpha.a = 0.2f;
+                    cheeseIcon.color = tempAlpha;
+                }
                 break;
 
             case "Tomato":
-                tempAlpha = cheeseIcon.color;
-                tempAlpha.a = 1f;
-                tomatoIcon.color = tempAlpha;
+                otherIngredient = GameObject.Find("/Ingredients/Tomato");
+                if(ingredients.Contains(otherIngredient)){
+                    tempAlpha = cheeseIcon.color;
+                    tempAlpha.a = 1f;
+                    tomatoIcon.color = tempAlpha;
+                }else{
+                    tempAlpha = cheeseIcon.color;
+                    tempAlpha.a = 0.2f;
+                    cheeseIcon.color = tempAlpha;
+                }
                 break;
         }
 
@@ -205,6 +291,7 @@ public class PlayerScript : MonoBehaviour
             var doneIngredientGo = other.gameObject;
             doneIngredients.Add(doneIngredientGo);
             other.gameObject.GetComponent<Renderer>().enabled = false;
+            other.gameObject.GetComponent<Collider>().enabled = false;
         }
 
         if (other.gameObject.CompareTag("Pan"))
@@ -213,7 +300,7 @@ public class PlayerScript : MonoBehaviour
         }
     }
 
-    private void OnTriggerStay(Collider other)
+    private IEnumerator OnTriggerStay(Collider other)
     {
         string cookWareName = other.gameObject.name;
 
@@ -267,9 +354,15 @@ public class PlayerScript : MonoBehaviour
                     {
                         cookText.gameObject.SetActive(true);
                         cookText.text = "Press F to make sauce";
+                        if (audioPlayer.isPlaying)
+                        {
+                            cookText.text = "Preparing...";
+                        }
                         if (Input.GetKeyDown(KeyCode.F))
                         {
-                            //Invoke("ShowIngredient(sauce)", 1f);
+                            audioPlayer.clip = boilingSound;
+                            audioPlayer.Play();
+                            yield return new WaitForSeconds(3);
                             sauce.gameObject.SetActive(true);
                         }
                         if (sauce.gameObject.activeSelf == true)
@@ -285,8 +378,15 @@ public class PlayerScript : MonoBehaviour
                     {
                         cookText.gameObject.SetActive(true);
                         cookText.text = "Press F to make dough";
+                        if (audioPlayer.isPlaying)
+                        {
+                            cookText.text = "Preparing...";
+                        }
                         if (Input.GetKeyDown(KeyCode.F))
                         {
+                            audioPlayer.clip = doughSound;
+                            audioPlayer.Play();
+                            yield return new WaitForSeconds(3);
                             dough.gameObject.SetActive(true);
                         }
                         if (dough.gameObject.activeSelf == true)
@@ -302,8 +402,15 @@ public class PlayerScript : MonoBehaviour
                     {
                         cookText.gameObject.SetActive(true);
                         cookText.text = "Press F to slice the cheese";
+                        if (audioPlayer.isPlaying)
+                        {
+                            cookText.text = "Preparing...";
+                        }
                         if (Input.GetKeyDown(KeyCode.F))
                         {
+                            audioPlayer.clip = graterSound;
+                            audioPlayer.Play();
+                            yield return new WaitForSeconds(3);
                             shreddedCheese.gameObject.SetActive(true);
                         }
                         if (shreddedCheese.gameObject.activeSelf == true)
@@ -319,8 +426,15 @@ public class PlayerScript : MonoBehaviour
                     {
                         cookText.gameObject.SetActive(true);
                         cookText.text = "Press F to grind meat";
+                        if (audioPlayer.isPlaying)
+                        {
+                            cookText.text = "Preparing...";
+                        }
                         if (Input.GetKeyDown(KeyCode.F))
                         {
+                            audioPlayer.clip = chopSound;
+                            audioPlayer.Play();
+                            yield return new WaitForSeconds(3);
                             meatCubes.gameObject.SetActive(true);
                         }
                         if (meatCubes.gameObject.activeSelf == true)
@@ -338,9 +452,16 @@ public class PlayerScript : MonoBehaviour
             {
                 cookText.gameObject.SetActive(true);
                 cookText.text = "F to prepare pizza";
+                if (audioPlayer.isPlaying)
+                {
+                    cookText.text = "Preparing...";
+                }
                 if (Input.GetKeyDown(KeyCode.F))
                 {
                     cookText.gameObject.SetActive(true);
+                    audioPlayer.clip = pizzSplat;
+                    audioPlayer.Play();
+                    yield return new WaitForSeconds(0.5f);
                     rawPizza.gameObject.SetActive(true);
                 }
             }
@@ -374,6 +495,9 @@ public class PlayerScript : MonoBehaviour
                 cookText.text = "F to cook pizza";
                 if (Input.GetKeyDown(KeyCode.F))
                 {
+                    audioPlayer.clip = ovenDone;
+                    audioPlayer.Play();
+                    yield return new WaitForSeconds(3);
                     pizza.gameObject.SetActive(true);
                     pizzas.Remove(rawPizza);
                 }
@@ -429,15 +553,15 @@ public class PlayerScript : MonoBehaviour
         cookText.gameObject.SetActive(false);
     }
 
-    //private void ShowIngredient(GameObject ingredientReady)
-    //{
-    //    ingredientReady.gameObject.SetActive(true);
+    private void ShowIngredient(GameObject ingredientReady)
+    {
+        ingredientReady.gameObject.SetActive(true);
 
-    //    if(ingredientReady.gameObject.activeSelf == true)
-    //    {
-    //        cookText.text = "Done!";
-    //    }
-    //}
+        if (ingredientReady.gameObject.activeSelf == true)
+        {
+            cookText.text = "Done!";
+        }
+    }
 
     private void Timer()
     {
