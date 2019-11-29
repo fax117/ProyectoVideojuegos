@@ -82,8 +82,21 @@ public class PlayerScript : MonoBehaviour
 
     void Update()
     {
+        var ingredientsToCheck = GameObject.FindGameObjectsWithTag("Ingredient");
+        foreach (GameObject ingredientToCheck in ingredientsToCheck)
+        {
+            if (ingredients.Contains(ingredientToCheck))
+            {
+                ingredientToCheck.GetComponent<MeshRenderer>().enabled = false;
+                ingredientToCheck.GetComponent<Collider>().enabled = false;
+            }else{
+                ingredientToCheck.GetComponent<MeshRenderer>().enabled = true;
+                ingredientToCheck.GetComponent<Collider>().enabled = true;
+            }
+        }
+
         Movement();
-        GroudnControl();
+        GroundControl();
         ShowRecipie();
         Jump();
         Sprint();
@@ -118,14 +131,12 @@ public class PlayerScript : MonoBehaviour
         }
     }
 
-    private void GroudnControl(){
-        //Ground Control
+    private void GroundControl(){
         RaycastHit hit = new RaycastHit();
         if (Physics.Raycast(groundCheck.transform.position, -groundCheck.transform.up, out hit, 10, layer) )
         {
-
-            Debug.DrawRay(groundCheck.transform.position, groundCheck.transform.TransformDirection(-Vector3.up) * hit.distance, Color.yellow);
-            Debug.Log("Did Hit");
+            /*Debug.DrawRay(groundCheck.transform.position, groundCheck.transform.TransformDirection(-Vector3.up) * hit.distance, Color.yellow);
+            Debug.Log("Did Hit");*/
 
             distanceToGround = hit.distance;
             groundNormal = hit.normal;
@@ -137,62 +148,9 @@ public class PlayerScript : MonoBehaviour
             else
             {
                 onGround = false;
-            }
-
-            
-        }
-
-        if (Input.GetKey(KeyCode.Tab))
-        {
-            recipe.SetActive(true);
-        }
-        else
-        {
-            recipe.SetActive(false);
-        }
-
-        var ingredientsToCheck = GameObject.FindGameObjectsWithTag("Ingredient");
-        foreach (GameObject ingredientToCheck in ingredientsToCheck)
-        {
-            if (ingredients.Contains(ingredientToCheck))
-            {
-                ingredientToCheck.GetComponent<MeshRenderer>().enabled = false;
-                ingredientToCheck.GetComponent<Collider>().enabled = false;
-            }else{
-                ingredientToCheck.GetComponent<MeshRenderer>().enabled = true;
-                ingredientToCheck.GetComponent<Collider>().enabled = true;
-            }
-        }
-
-        //Gavity and Rotation
-        /* Vector3 gravDirection = (transform.position - planet.transform.position).normalized;
-
-         if (onGround == false)
-         {
-             rb.AddForce(gravDirection * -gravity);
-         }
-
-         Quaternion toRotation = Quaternion.FromToRotation(transform.up, gravDirection) * transform.rotation;
-         transform.rotation = toRotation;
-         groundCheck.transform.rotation = toRotation;*/
-
-        Jump();
-        Sprint();
-        Timer();
-    }
-
-    private void ChangePlanet(Collider collision){
-        if(collision.transform != planet.transform){
-            var pt = collision.gameObject.GetComponent<GravityAtractor>();
-            planet = collision.transform.gameObject;
-
-            transform.GetComponent<GravityBody>().planet = pt;
-
-            playerPlaceholder.GetComponent<PlayerPlaceholder>().NewPlanet(planet);
-
+            }            
         }
     }
-
     private void Jump()
     {
         if (Input.GetKeyDown(KeyCode.Space)) // && groundCheck

@@ -8,11 +8,13 @@ public class ThirdPersonCamera : MonoBehaviour
     public float rotationSpeed = 5f;
     public Transform target, player;
     float mouseX, mouseY;
+    Quaternion startRotPos;
 
     private void Start() {
-        Cursor.visible = false;
-        Cursor.lockState = CursorLockMode.Locked;
+        /*Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.Locked;*/
 
+        startRotPos = target.rotation;
         player = GameObject.FindGameObjectWithTag("Player").transform;
     }
 
@@ -32,6 +34,9 @@ public class ThirdPersonCamera : MonoBehaviour
         //transform.rotation = Quaternion.LookRotation( cros, -transform.up );
         target.rotation = Quaternion.Euler(mouseY, mouseX, 0);
 
+        if(Input.GetMouseButtonDown(2)){
+            target.rotation = Quaternion.Slerp(target.rotation, startRotPos, 1f);
+        }
 
         //player.rotation = Quaternion.Euler(0, mouseX, 0);
     }
