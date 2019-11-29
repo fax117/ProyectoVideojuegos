@@ -24,7 +24,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 873801547410758169}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.0535, z: 0}
+  m_LocalPosition: {x: 0, y: -0.1, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4739410716784066153}
@@ -156,7 +156,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   jumpHeight: 0
-  gravity: 0
   onGround: 1
   groundCheck: {fileID: 873801547410758169}
   layer:
@@ -171,11 +170,15 @@ MonoBehaviour:
   rawPizza: {fileID: 0}
   pizza: {fileID: 0}
   cookText: {fileID: 0}
+  timerText: {fileID: 0}
   winText: {fileID: 0}
   cheeseIcon: {fileID: 0}
   flourIcon: {fileID: 0}
   meatIcon: {fileID: 0}
   tomatoIcon: {fileID: 0}
+  gameOver: {fileID: 0}
+  restartButton: {fileID: 0}
+  recipe: {fileID: 0}
 --- !u!114 &6600568459636563618
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
 
 public class CameraFollow : MonoBehaviour
 {
@@ -23,6 +25,8 @@ public class CameraFollow : MonoBehaviour
             transform.RotateAround(target.transform.position, transform.right, -Input.GetAxis("Mouse Y") * xSpeed );
         }
 
+        transform.LookAt(target.transform);
+        
         //Zoom
         float fov = Camera.main.fieldOfView;
         fov += Input.mouseScrollDelta.y * -sensitivity;

@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.1355659, g: 0.055724762, b: 0.17863533, a: 1}
+  m_IndirectSpecularColor: {r: 0.13544446, g: 0.055564627, b: 0.17852691, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -574,6 +574,16 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 2540817853737639666, guid: 800db5aba7a9040f29e3f37fc0b62bff,
         type: 3}
+    - target: {fileID: 919879671534461484, guid: de4f0740daef35445894e1a62787a772,
+        type: 3}
+      propertyPath: gravity
+      value: -15
+      objectReference: {fileID: 0}
+    - target: {fileID: 5466049953820644544, guid: de4f0740daef35445894e1a62787a772,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: de4f0740daef35445894e1a62787a772, type: 3}
 --- !u!1 &169918288
@@ -2155,7 +2165,7 @@ Light:
   m_BounceIntensity: 0.5
   m_ColorTemperature: 6570
   m_UseColorTemperature: 0
-  m_BoundingSphereOverride: {x: 1e-45, y: 1.47e-43, z: 0, w: 2.2e-44}
+  m_BoundingSphereOverride: {x: 0, y: 0, z: 0, w: 0}
   m_UseBoundingSphereOverride: 0
   m_ShadowRadius: 0
   m_ShadowAngle: 0
@@ -3416,6 +3426,24 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 4739410716859273725}
   m_PrefabAsset: {fileID: 0}
+--- !u!143 &1202088541
+CharacterController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1202088533}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 0
+  serializedVersion: 2
+  m_Height: 0.09368553
+  m_Radius: 0.02833416
+  m_SlopeLimit: 0
+  m_StepOffset: 0
+  m_SkinWidth: 0.0001
+  m_MinMoveDistance: 0
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &1209309590
 GameObject:
   m_ObjectHideFlags: 0
@@ -3770,6 +3798,21 @@ PrefabInstance:
       propertyPath: planet
       value: 
       objectReference: {fileID: 1764938568}
+    - target: {fileID: 3509396519309466558, guid: b9a09d061b9679c4b92d3d7e015b28e5,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9025229126715784492, guid: b9a09d061b9679c4b92d3d7e015b28e5,
+        type: 3}
+      propertyPath: rotateSpeed
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 9025229126715784492, guid: b9a09d061b9679c4b92d3d7e015b28e5,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b9a09d061b9679c4b92d3d7e015b28e5, type: 3}
 --- !u!1001 &1253288089
@@ -3911,7 +3954,7 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1, y: 1.08, z: -1.42}
+  m_Size: {x: 1, y: 1.08, z: 1.42}
   m_Center: {x: 0, y: -0.05, z: 0.45}
 --- !u!23 &1279350769
 MeshRenderer:

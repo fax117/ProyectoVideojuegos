@@ -9,6 +9,8 @@ public class PlayerScript : MonoBehaviour
     private float zSpeed;
     private float speed;
     private float sprintSpeed;
+    private float mouseX;
+    private float rotationSpeed;
     private float timeRun;
     private float minsLeft, secsLeft, secs, mins;
 
@@ -53,10 +55,12 @@ public class PlayerScript : MonoBehaviour
 
     private void Start()
     {
-        speed = 12f;    //tutorial = 4f;
-        sprintSpeed = 7f;
+        speed = 20f;    //tutorial = 4f;
+        sprintSpeed = 5f;
         timeRun = 180;
 
+        rotationSpeed = 10f;
+        
         jumpHeight = 1.5f;
         gravity = 20;
         onGround = true;
@@ -70,67 +74,9 @@ public class PlayerScript : MonoBehaviour
 
     void Update()
     {
-        //Movement
-        xSpeed = Input.GetAxisRaw("Horizontal") * Time.deltaTime * speed;
-        zSpeed = Input.GetAxisRaw("Vertical") * Time.deltaTime * speed;
-
-        transform.Translate(xSpeed, 0f, zSpeed);
-
-        //Local Rotation
-        if (Input.GetKey(KeyCode.E))
-        {
-            transform.Rotate(0, 150 * Time.deltaTime, 0);
-        }
-        if (Input.GetKey(KeyCode.Q))
-        {
-            transform.Rotate(0, -150 * Time.deltaTime, 0);
-        }
-
-        //Ground Control
-        RaycastHit hit = new RaycastHit();
-        if (Physics.Raycast(groundCheck.transform.position, -groundCheck.transform.up, out hit, 10, layer) )
-        {
-            distanceToGround = hit.distance;
-            groundNormal = hit.normal;
-
-            if(distanceToGround <= 0.2f)
-            {
-                onGround = true;
-            }
-            else
-            {
-                onGround = false;
-            }
-
-            
-        }
-
-        if (Input.GetKey(KeyCode.Tab))
-        {
-            recipe.SetActive(true);
-        }
-        else
-        {
-            recipe.SetActive(false);
-        }
-
-
-
-
-        //Gavity and Rotation
-        /* Vector3 gravDirection = (transform.position - planet.transform.position).normalized;
-
-         if (onGround == false)
-         {
-             rb.AddForce(gravDirection * -gravity);
-         }
-
-         Quaternion toRotation = Quaternion.FromToRotation(transform.up, gravDirection) * transform.rotation;
-         transform.rotation = toRotation;
-         groundCheck.transform.rotation = toRotation;*/
-
-
-
+        Movement();
+        GroudnControl();
+        ShowRecipie();
         Jump();
         Sprint();
         Timer();
@@ -144,18 +90,59 @@ public class PlayerScript : MonoBehaviour
             transform.GetComponent<GravityBody>().planet = pt;
 
             playerPlaceholder.GetComponent<PlayerPlaceholder>().NewPlanet(planet);
-
         }
+    }
+
+    private void Movement(){
+        //Movement
+        xSpeed = Input.GetAxisRaw("Horizontal");
+        zSpeed = Input.GetAxisRaw("Vertical");
+        mouseX = Input.GetAxisRaw("Mouse X") * rotationSpeed;
+
+        Quaternion rotActual = transform.rotation; 
+
+        Vector3 playerMovement = new Vector3(xSpeed, 0f, zSpeed).normalized * speed * Time.deltaTime;
+
+        transform.Translate(playerMovement, Space.Self);
+
+        if(Input.GetAxis("Mouse X") != 0){
+            transform.Rotate(rotActual.y, mouseX , rotActual.z);
+        }
+    }
+
+    private void GroudnControl(){
+        //Ground Control
+        RaycastHit hit = new RaycastHit();
+        if (Physics.Raycast(groundCheck.transform.position, -groundCheck.transform.up, out hit, 10, layer) )
+        {
+
+            Debug.DrawRay(groundCheck.transform.position, groundCheck.transform.TransformDirection(-Vector3.up) * hit.distance, Color.yellow);
+            Debug.Log("Did Hit");
+
+            distanceToGround = hit.distance;
+            groundNormal = hit.normal;
+
+            if(distanceToGround <= 0.3f )//&& hit.collider != <>()
+            {
+                onGround = true;
+            }
+            else
+            {
+                onGround = false;
+            }
+        }else{
+            Debug.DrawRay(groundCheck.transform.position, groundCheck.transform.TransformDirection(-Vector3.up) * 1000, Color.white);
+            Debug.Log("Did not Hit");
+        } 
     }
 
     private void Jump()
     {
+        if (Input.GetKeyDown(KeyCode.Space)) // && groundCheck
         {
-            if (Input.GetKeyDown(KeyCode.Space))
-            {
-                rb.AddForce(transform.up * 30000 * jumpHeight * Time.deltaTime);
-            }
-        }        
+            //rb.AddForce(transform.up * 20f * jumpHeight, ForceMode.Impulse);
+            rb.AddForce(transform.up * 30000 * jumpHeight * Time.deltaTime);
+        }
     }
 
     private void Sprint()
@@ -482,5 +469,14 @@ public class PlayerScript : MonoBehaviour
             restartButton.gameObject.SetActive(true);
         }
 
+    }
+
+    private void ShowRecipie(){
+        if (Input.GetKey(KeyCode.Tab)){
+            recipe.SetActive(true);
+        }
+        else{
+            recipe.SetActive(false);
+        }
     }
 }
