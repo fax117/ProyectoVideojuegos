@@ -34,9 +34,9 @@ public class ThirdPersonCamera : MonoBehaviour
         //transform.rotation = Quaternion.LookRotation( cros, -transform.up );
         target.rotation = Quaternion.Euler(mouseY, mouseX, 0);
 
-        if(Input.GetMouseButtonDown(2)){
+        /*if(Input.GetMouseButtonDown(2)){
             target.rotation = Quaternion.Slerp(target.rotation, startRotPos, 1f);
-        }
+        }*/
 
         //player.rotation = Quaternion.Euler(0, mouseX, 0);
     }
