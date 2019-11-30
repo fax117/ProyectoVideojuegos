@@ -44,6 +44,8 @@ public class DataHandler : MonoBehaviour
         Color meatIcon = unit.meatIcon.color;
         Color tomatoIcon = unit.tomatoIcon.color;
         Color flourIcon = unit.flourIcon.color;
+        float timeRun = unit.timeRun;
+
         SaveObject saveObject = new SaveObject
         {
             ingredients = ingredients,
@@ -53,7 +55,8 @@ public class DataHandler : MonoBehaviour
             cheeseIcon = cheeseIcon,
             meatIcon = meatIcon,
             tomatoIcon = tomatoIcon,
-            flourIcon = flourIcon
+            flourIcon = flourIcon,
+            timeRun = timeRun
         };
         string json = JsonUtility.ToJson(saveObject);
         SaveSystem.Save(json);
@@ -77,6 +80,8 @@ public class DataHandler : MonoBehaviour
             unit.meatIcon.color = saveObject.meatIcon;
             unit.tomatoIcon.color = saveObject.tomatoIcon;
             unit.flourIcon.color = saveObject.flourIcon;
+            unit.timeRun = saveObject.timeRun;
+
         } else {
         }
     }
@@ -92,5 +97,7 @@ public class DataHandler : MonoBehaviour
         public Color meatIcon;
         public Color tomatoIcon;
         public Color flourIcon;
+
+        public float timeRun;
     }
 }

@@ -11,8 +11,8 @@ public class PlayerScript : MonoBehaviour
     private float sprintSpeed;
     private float mouseX;
     private float rotationSpeed;
-    private float timeRun;
-    private float minsLeft, secsLeft, secs, mins;
+    public float timeRun;
+    public float minsLeft, secsLeft, secs, mins;
 
     //Galaxy style movement 
     public float jumpHeight;
